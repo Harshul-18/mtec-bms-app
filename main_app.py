@@ -86,7 +86,9 @@ with column_2:
     with c2:
         models_df = retrieve_data(uri, 'vehicles', ['models'])
         model_options = models_df['model'].dropna().unique()
-        model = st.selectbox("Select Model", model_options)
+        a = {k.replace('Model', 'Vehicle'): k for k in model_options}
+        model = st.selectbox("Select Model", list(a.keys()))
+        model = a[model]
     with c3:
         ml_models = ['Linear Regression', 'SVM', 'Random Forest', 'Decision Tree', 'Gradient Boosting']
         selected_ml_model = st.selectbox('Select ML Model', ml_models)
@@ -99,13 +101,14 @@ while True:
         current_col, voltage_col = st.columns(2)
         with current_col:
             mean_current_health = whole_df.groupby('model')['current'].mean().reset_index()
+            mean_current_health['model'] = mean_current_health['model'].apply(lambda x: x.replace('Model', 'Vehicle'))
             fig = px.bar(mean_current_health, x='model', y='current', text='current', color_discrete_sequence=['#3EBABC'])
             fig.update_layout(
                 height=300,
                 plot_bgcolor='rgba(0,0,0,0)',
                 paper_bgcolor='rgba(0,0,0,0)',
                 xaxis=dict(
-                    title='Model',
+                    title='Vehicles',
                     title_font={'color': 'black'},
                     tickfont_color='black'
                 ),
@@ -119,13 +122,14 @@ while True:
             st.write(fig)
         with voltage_col:
             mean_voltage = whole_df.groupby('model')['voltage'].mean().reset_index()
+            mean_voltage['model'] = mean_voltage['model'].apply(lambda x: x.replace('Model', 'Vehicle'))
             fig = px.bar(mean_voltage, x='model', y='voltage', text='voltage', color_discrete_sequence=['#3EBABC'])
             fig.update_layout(
                 height=300,
                 plot_bgcolor='rgba(0,0,0,0)',
                 paper_bgcolor='rgba(0,0,0,0)',
                 xaxis=dict(
-                    title='Model',
+                    title='Vehicles',
                     title_font={'color': 'black'},
                     tickfont_color='black'
                 ),
@@ -140,13 +144,14 @@ while True:
         temperature_col, battery_health_col = st.columns(2)
         with temperature_col:
             mean_temperature = whole_df.groupby('model')['temperature'].mean().reset_index()
+            mean_temperature['model'] = mean_temperature['model'].apply(lambda x: x.replace('Model', 'Vehicle'))
             fig = px.bar(mean_temperature, x='model', y='temperature', text='temperature', color_discrete_sequence=['#3EBABC'])
             fig.update_layout(
                 height=300,
                 plot_bgcolor='rgba(0,0,0,0)',
                 paper_bgcolor='rgba(0,0,0,0)',
                 xaxis=dict(
-                    title='Model',
+                    title='Vehicles',
                     title_font={'color': 'black'},
                     tickfont_color='black'
                 ),
@@ -160,13 +165,14 @@ while True:
             st.write(fig)
         with battery_health_col:
             mean_battery_health = whole_df.groupby('model')['battery_health'].mean().reset_index()
+            mean_battery_health['model'] = mean_battery_health['model'].apply(lambda x: x.replace('Model', 'Vehicle'))
             fig = px.bar(mean_battery_health, x='model', y='battery_health', text='battery_health', color_discrete_sequence=['#3EBABC'])
             fig.update_layout(
                 height=300,
                 plot_bgcolor='rgba(0,0,0,0)',
                 paper_bgcolor='rgba(0,0,0,0)',
                 xaxis=dict(
-                    title='Model',
+                    title='Vehicles',
                     title_font={'color': 'black'},
                     tickfont_color='black'
                 ),
